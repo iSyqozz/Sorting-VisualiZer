@@ -501,7 +501,7 @@ def run():
 
     list_frame = Frame(master = root,bg = '#030414')
     
-    names = ['Gnome Sort','Brick Sort','Shell Sort']
+    names = ['Cycle Sort','Radix Sort','Gnome Sort','Brick Sort','Shell Sort']
     r = 0
     for name in names:
         b = (Button(master = list_frame, cursor="hand2",text = name,relief = FLAT,font=('',9) , bg = '#030414',fg ='white',activebackground='#0c0d17',activeforeground='#88aff7',highlightcolor='#88aff7',highlightbackground='#88aff7',highlightthickness=1))
@@ -509,7 +509,7 @@ def run():
         b.config(command = lambda v = b:change_sort(v,curr_algo))
         r+=1
     
-    names = ['Bubble Sort','Insertion Sort','Selection Sort','Counting Sort','Merge Sort','Quick Sort','Heap Sort','Cycle Sort','Radix Sort']
+    names = ['Bubble Sort','Insertion Sort','Selection Sort','Counting Sort','Merge Sort','Quick Sort','Heap Sort']
     r = 0
     for name in names:
         b = (Button(master = list_frame, cursor="hand2",text = name,relief = FLAT,font=('',9) , bg = '#030414',fg ='white',activebackground='#0c0d17',activeforeground='#88aff7',highlightcolor='#88aff7',highlightbackground='#88aff7',highlightthickness=1))
