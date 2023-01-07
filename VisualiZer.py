@@ -42,8 +42,6 @@ def reset(lines,canv,root,ind):
         x1+=5  ; x2+=5 ; y1-=4
     ind.pack_forget() 
     root.update()
-def change_sort(choice,l):
-    l['text'] = choice['text']
 
 #def mergesort()
 
@@ -138,8 +136,6 @@ def CycleSort(lines,canv,root,l,r):
         # repeat above steps as long as we can find values to swap
         while currentIndexCopy != currentIndex:
 
-            print('ok')
-
             currentIndexCopy = currentIndex
             # loop through all indexes that proceed the currentIndex
             i = currentIndex + 1
@@ -187,7 +183,6 @@ def MergeSort(lines,canv,root,l,r):
         root.update_idletasks()
         time.sleep(0.01)
         canv.itemconfigure(right[-1],outline = '#88aff7',fill = 'black')
-    print(left,right)
 
     i = j = 0
     k = l
@@ -271,14 +266,12 @@ def helper(lines,canv,root,place):
 def RadixSort(lines,canv,root,l,r):
     mx = 480
     place = 1
-    print(len(lines))
     while mx //place > 0:
         for line in lines:
             canv.itemconfigure(line,outline = 'yellow',fill = '#69ffd2')
             root.update_idletasks()
             time.sleep(0.005)
             canv.itemconfigure(line,outline = '#88aff7',fill = 'black')
-            print(canv.coords(line)[1])
         helper(lines,canv,root,place)
         place*=10
     r-=1
@@ -301,44 +294,6 @@ def RadixSort(lines,canv,root,l,r):
         
         l+=1 ; r-=1
 
-def partition(lines,canv,root,l,r):
-
-    # choose the rightmost element as pivot
-    pivot = canv.coords(lines[r])[1]
-    # pointer for greater element
-    i = l - 1
-
-    # traverse through all elements
-    # compare each element with pivot
-    for j in range(l, r):
-        canv.itemconfigure(lines[j],outline = '#69ffd2',fill = '#69ffd2')
-        root.update_idletasks()
-        time.sleep(0.01)
-        canv.itemconfigure(lines[j],outline = '#88aff7',fill = 'black')
-        if canv.coords(lines[j])[1] > pivot:
-        # If element smaller than pivot is found
-        # swap it with the greater element pointed by i
-            i = i + 1
-            x0,y0,x1,y1 = canv.coords(lines[i])
-            x2,y2,x3,y3 = canv.coords(lines[j])
-            canv.coords(lines[i],x0,y2,x1,y1)
-            canv.coords(lines[j],x2,y0,x3,y3)
-        root.update_idletasks()
-        
-
-            # Swapping element at i with element at j
-    # Swap the pivot element with the greater element specified by i
-    x0,y0,x1,y1 = canv.coords(lines[i+1])
-    x2,y2,x3,y3 = canv.coords(lines[r])
-    canv.coords(lines[i+1],x0,y2,x1,y1)
-    canv.coords(lines[r],x2,y0,x3,y3)
-    canv.itemconfigure(lines[r],outline = '#69ffd2',fill = '#69ffd2')
-    root.update_idletasks()
-    time.sleep(0.005)
-    canv.itemconfigure(lines[r],outline = '#88aff7',fill = 'black')
-    root.update_idletasks()
-
-    return i + 1
 
 def heapify(lines,canv,root,n,i):
     largest = i  # Initialize largest as root
@@ -392,16 +347,51 @@ def HeapSort(lines,canv,root,l,r):
 
         heapify(lines,canv,root,i, 0)
 
+def partition(lines,canv,root,l,r):
+
+    # choose the rightmost element as pivot
+    pivot = canv.coords(lines[r])[1]
+    # pointer for greater element
+    i = l - 1
+
+    # traverse through all elements
+    # compare each element with pivot
+    for j in range(l, r):
+        canv.itemconfigure(lines[j],outline = '#69ffd2',fill = '#69ffd2')
+        root.update_idletasks()
+        time.sleep(0.01)
+        canv.itemconfigure(lines[j],outline = '#88aff7',fill = 'black')
+        if canv.coords(lines[j])[1] > pivot:
+        # If element smaller than pivot is found
+        # swap it with the greater element pointed by i
+            i = i + 1
+            x0,y0,x1,y1 = canv.coords(lines[i])
+            x2,y2,x3,y3 = canv.coords(lines[j])
+            canv.coords(lines[i],x0,y2,x1,y1)
+            canv.coords(lines[j],x2,y0,x3,y3)
+        root.update_idletasks()
+        
+
+    # Swap the pivot element with the greater element specified by i
+    x0,y0,x1,y1 = canv.coords(lines[i+1])
+    x2,y2,x3,y3 = canv.coords(lines[r])
+    canv.coords(lines[i+1],x0,y2,x1,y1)
+    canv.coords(lines[r],x2,y0,x3,y3)
+    canv.itemconfigure(lines[r],outline = '#69ffd2',fill = '#69ffd2')
+    root.update_idletasks()
+    time.sleep(0.005)
+    canv.itemconfigure(lines[r],outline = '#88aff7',fill = 'black')
+    root.update_idletasks()
+
+    return i + 1
 
 def QuickSort(lines,canv,root,l,r):
     if l < r:
     # Find pivot element such that
     # element smaller than pivot are on the left
     # element greater than pivot are on the right
-        print(l,r)
         pi = partition(lines,canv,root,l,r)
 
-        print(pi)
         # Recursive call on the left of pivot
         QuickSort(lines,canv,root,l,pi-1)
 
@@ -424,13 +414,206 @@ def GnomeSort(lines,canv,root,l,r):
             canv.coords(lines[i-1],x0,y2,x1,y1)
             canv.coords(lines[i],x2,y0,x3,y3)
             i-=1
+def ShellSort(lines,canv,root,l,r):
+    # code here
+    gap=r//2
 
-    
+
+    while gap>0:
+        j=gap
+        # Check the array in from left to right
+        # Till the last possible index of j
+        while j<r:
+            i=j-gap # This will keep help in maintain gap value
+
+            while i>=0:
+                # If value on right side is already greater than left side value
+                # We don't do swap else we swap
+                canv.itemconfigure(lines[i],outline = '#69ffd2',fill = '#69ffd2')
+                root.update_idletasks()
+                time.sleep(0.008)
+                canv.itemconfigure(lines[i],outline = '#88aff7',fill = 'black')                
+                root.update_idletasks()
+                if canv.coords(lines[i+gap])[1]<canv.coords(lines[i])[1]:
+                    break
+                else:
+                    x0,y0,x1,y1 = canv.coords(lines[i+gap])
+                    x2,y2,x3,y3 = canv.coords(lines[i])
+                    canv.coords(lines[i+gap],x0,y2,x1,y1)
+                    canv.coords(lines[i],x2,y0,x3,y3)
+                root.update()
+                i=i-gap # To check left side also
+                # If the element present is greater than current element
+            j+=1
+        gap=gap//2
+def CocktailSort(lines,canv,root,l,r):
+    n = r
+    swapped = True
+    start = 0
+    end = n-1
+    while (swapped == True):
+
+# reset the swapped flag on entering the loop,
+# because it might be true from a previous
+# iteration.
+        swapped = False
+
+# loop from left to right same as the bubble
+# sort
+        for i in range(start, end):
+            
+            canv.itemconfigure(lines[i],outline = '#69ffd2',fill = '#69ffd2')
+            root.update_idletasks()
+            time.sleep(0.0005)
+            canv.itemconfigure(lines[i],outline = '#88aff7',fill = 'black')                
+            root.update_idletasks()
+            
+            if canv.coords(lines[i])[1]<canv.coords(lines[i+1])[1]:
+                x0,y0,x1,y1 = canv.coords(lines[i+1])
+                x2,y2,x3,y3 = canv.coords(lines[i])
+                canv.coords(lines[i+1],x0,y2,x1,y1)
+                canv.coords(lines[i],x2,y0,x3,y3)
+                swapped = True
+
+# if nothing moved, then array is sorted.
+        if (swapped == False):
+            break
+
+# otherwise, reset the swapped flag so that it
+# can be used in the next stage
+        swapped = False
+
+# move the end point back by one, because
+# item at the end is in its rightful spot
+        end = end-1
+
+# from right to left, doing the same
+# comparison as in the previous stage
+        for i in range(end-1, start-1, -1):
+            canv.itemconfigure(lines[i],outline = '#69ffd2',fill = '#69ffd2')
+            root.update_idletasks()
+            time.sleep(0.0005)
+            canv.itemconfigure(lines[i],outline = '#88aff7',fill = 'black')                
+            root.update_idletasks()
+            
+            if canv.coords(lines[i])[1]<canv.coords(lines[i+1])[1]:
+                x0,y0,x1,y1 = canv.coords(lines[i+1])
+                x2,y2,x3,y3 = canv.coords(lines[i])
+                canv.coords(lines[i+1],x0,y2,x1,y1)
+                canv.coords(lines[i],x2,y0,x3,y3)
+                swapped = True
+
+# increase the starting point, because
+# the last stage would have moved the next
+# smallest number to its rightful spot.
+        start = start + 1
+def getNextGap(gap):
+
+# Shrink gap by Shrink factor
+    gap = (gap * 10)//13
+    if gap < 1:
+        return 1
+    return gap
+def CombSort(lines,canv,root,l,r):
+    n = r
+
+# Initialize gap
+    gap = n
+
+    # Initialize swapped as true to make sure that
+    # loop runs
+    swapped = True
+
+    # Keep running while gap is more than 1 and last
+    # iteration caused a swap
+    while gap !=1 or swapped:
+        
+
+    # Find next gap
+        gap = getNextGap(gap)
+
+        # Initialize swapped as false so that we can
+        # check if swap happened or not
+        swapped = False
+
+        # Compare all elements with current gap
+        for i in range(0, n-gap):
+            canv.itemconfigure(lines[i],outline = '#69ffd2',fill = '#69ffd2')
+            root.update_idletasks()
+            time.sleep(0.002)
+            canv.itemconfigure(lines[i],outline = '#88aff7',fill = 'black')                
+            root.update_idletasks()
+
+            if canv.coords(lines[i])[1]<canv.coords(lines[i+gap])[1]:
+                x0,y0,x1,y1 = canv.coords(lines[i+gap])
+                x2,y2,x3,y3 = canv.coords(lines[i])
+                canv.coords(lines[i+gap],x0,y2,x1,y1)
+                canv.coords(lines[i],x2,y0,x3,y3)
+                swapped = True
+def flip(lines, i,canv,root):
+    start = 0
+    while start < i:
+        canv.itemconfigure(lines[i],outline = '#69ffd2',fill = '#69ffd2')
+        canv.itemconfigure(lines[start],outline = '#69ffd2',fill = '#69ffd2')
+        root.update_idletasks()
+        time.sleep(0.0005)
+        canv.itemconfigure(lines[i],outline = '#88aff7',fill = 'black')                
+        canv.itemconfigure(lines[start],outline = '#88aff7',fill = 'black')                
+
+        x0,y0,x1,y1 = canv.coords(lines[start])
+        x2,y2,x3,y3 = canv.coords(lines[i])
+        canv.coords(lines[start],x0,y2,x1,y1)
+        canv.coords(lines[i],x2,y0,x3,y3)
+        root.update_idletasks()
+
+        start += 1
+        i -= 1
+def findMax(lines, n,canv,root):
+    mi = 0
+    for i in range(0,n):
+        canv.itemconfigure(lines[i],outline = 'yellow',fill = 'yellow')
+        root.update_idletasks()
+        time.sleep(0.0005)
+        canv.itemconfigure(lines[i],outline = '#88aff7',fill = 'black')
+        root.update()     
+        if canv.coords(lines[i])[1] < canv.coords(lines[mi])[1]:
+            mi = i
+    return mi
+
+
+def PancakeSort(lines,canv,root,l,r):
+    # Start from the complete
+# array and one by one
+# reduce current size
+# by one
+    curr_size = r
+    while curr_size > 1:
+# Find index of the maximum
+# element in 
+# arr[0..curr_size-1]
+        mi = findMax(lines, curr_size,canv,root)
+
+# Move the maximum element
+# to end of current array
+# if it's not already at 
+# the end
+        if mi != curr_size-1:
+# To move at the end, 
+# first move maximum 
+# number to beginning 
+            flip(lines, mi,canv,root)
+
+# Now move the maximum 
+# number to end by
+# reversing current array
+            flip(lines, curr_size-1,canv,root)
+        curr_size -= 1
+
 
 def change_sort(choice,l):
     l['text'] = choice['text']
 
-algos = {'Gnome Sort':GnomeSort,'Cycle Sort':CycleSort,'Radix Sort':RadixSort,'Bubble Sort':BubbleSort,'Heap Sort':HeapSort,'Merge Sort': MergeSort,'Quick Sort':QuickSort,'Insertion Sort': InsertionSort,'Selection Sort':SelectionSort,'Counting Sort':CountingSort}
+algos = {'Pancake Sort':PancakeSort,'Comb Sort':CombSort,'Shell Sort':ShellSort,'Cocktail Sort':CocktailSort,'Gnome Sort':GnomeSort,'Cycle Sort':CycleSort,'Radix Sort':RadixSort,'Bubble Sort':BubbleSort,'Heap Sort':HeapSort,'Merge Sort': MergeSort,'Quick Sort':QuickSort,'Insertion Sort': InsertionSort,'Selection Sort':SelectionSort,'Counting Sort':CountingSort}
 
 def hide_list(event,f,d):
     f.place_forget()
@@ -451,7 +634,7 @@ def pick_algo(curr_algo,lines,canv,root,ind):
 def run():
 
     root = Tk()
-    root.resizable(0,0)
+    root.resizable(False,False)
     root.config(bg = '#06071a')
     root.geometry('580x603')
     root.title('Sorting VisualiZer')
@@ -472,18 +655,18 @@ def run():
         x1+=5  ; x2+=5 ; y1-=4 
     shuffle_button = Button(master = top_bar , cursor="hand2",text='Shuffle',relief = FLAT,font=('',9) , bg = '#030414',fg ='white' )
     shuffle_button.config(activebackground='#0c0d17',activeforeground='#88aff7',highlightcolor='#88aff7',highlightbackground='#88aff7',highlightthickness=1)
-    shuffle_button.pack(side = LEFT,padx=(10,0),pady=(0,))
+    shuffle_button.pack(side = LEFT,padx=(10,0))
     shuffle_button.config(command=lambda:randomize(lines,canv,root,ind2))
 
 
     reset_button = Button(master = top_bar , cursor="hand2",text='Reset',relief = FLAT,font=('',9) , bg = '#030414',fg ='white' )
     reset_button.config(activebackground='#0c0d17',activeforeground='#88aff7',highlightcolor='#88aff7',highlightbackground='#88aff7',highlightthickness=1)
-    reset_button.pack(side = LEFT,padx=(10,0),pady=(0,))
+    reset_button.pack(side = LEFT,padx=(10,0))
     reset_button.config(command=lambda:reset(lines,canv,root,ind3))
 
     sort_button = Button(master = top_bar , cursor="hand2",text='Sort',relief = FLAT,font=('',9) , bg = '#030414',fg ='white' )
     sort_button.config(activebackground='#0c0d17',activeforeground='#88aff7',highlightcolor='#88aff7',highlightbackground='#88aff7',highlightthickness=1)
-    sort_button.pack(side = LEFT,padx=(10,0),pady=(0,))
+    sort_button.pack(side = LEFT,padx=(10,0))
     sort_button.config(command=lambda:pick_algo(curr_algo,lines,canv,root,ind1))
 
     curr_algo = Label(master = top_bar ,text='Bubble Sort',width=13,relief = FLAT,font=('',9) , bg = '#030414',fg ='white' )
@@ -501,7 +684,7 @@ def run():
 
     list_frame = Frame(master = root,bg = '#030414')
     
-    names = ['Cycle Sort','Radix Sort','Gnome Sort','Brick Sort','Shell Sort']
+    names = ['Cycle Sort','Radix Sort','Gnome Sort','Shell Sort','Cocktail Sort','Comb Sort','Pancake Sort']
     r = 0
     for name in names:
         b = (Button(master = list_frame, cursor="hand2",text = name,relief = FLAT,font=('',9) , bg = '#030414',fg ='white',activebackground='#0c0d17',activeforeground='#88aff7',highlightcolor='#88aff7',highlightbackground='#88aff7',highlightthickness=1))
@@ -509,7 +692,7 @@ def run():
         b.config(command = lambda v = b:change_sort(v,curr_algo))
         r+=1
     
-    names = ['Bubble Sort','Insertion Sort','Selection Sort','Counting Sort','Merge Sort','Quick Sort','Heap Sort']
+    names = ['Bubble Sort','Insertion Sort','Selection Sort','Merge Sort','Quick Sort','Heap Sort','Counting Sort']
     r = 0
     for name in names:
         b = (Button(master = list_frame, cursor="hand2",text = name,relief = FLAT,font=('',9) , bg = '#030414',fg ='white',activebackground='#0c0d17',activeforeground='#88aff7',highlightcolor='#88aff7',highlightbackground='#88aff7',highlightthickness=1))
