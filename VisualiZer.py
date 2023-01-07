@@ -240,6 +240,7 @@ def CountingSort(lines,canv,root,l,r):
         x1+=5  ; x2+=5 ; y1-=4
 
 def helper(lines,canv,root,place):
+    
     n = len(lines)
     output = [0] * n
     count = [0] * 10
